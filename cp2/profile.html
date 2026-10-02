@@ -1,0 +1,792 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>MindX Profile</title>
+
+
+    <!-- Firebase -->
+
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-storage.js"></script>
+
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+
+        body {
+
+            margin: 0;
+
+            font-family: Arial, sans-serif;
+
+            background: #f5f7fb;
+
+        }
+
+
+        /* NAVBAR */
+
+        .navbar {
+
+            height: 65px;
+
+            background: white;
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            padding: 0 8%;
+
+            box-shadow:
+                0 2px 10px rgba(0,0,0,.08);
+
+        }
+
+
+        .logo {
+
+            font-size: 22px;
+
+            font-weight: bold;
+
+        }
+
+
+        .logo span {
+
+            color: #3563e9;
+
+        }
+
+
+        .logout {
+
+            padding: 9px 18px;
+
+            border: none;
+
+            border-radius: 6px;
+
+            background: #3563e9;
+
+            color: white;
+
+            cursor: pointer;
+
+        }
+
+
+        /* CONTAINER */
+
+        .container {
+
+            max-width: 700px;
+
+            margin: 40px auto;
+
+            padding: 35px;
+
+            background: white;
+
+            border-radius: 14px;
+
+            box-shadow:
+                0 5px 25px rgba(0,0,0,.08);
+
+        }
+
+
+        /* PROFILE HEADER */
+
+        .profile-header {
+
+            text-align: center;
+
+            margin-bottom: 30px;
+
+        }
+
+
+        .avatar {
+
+            width: 100px;
+
+            height: 100px;
+
+            border-radius: 50%;
+
+            object-fit: cover;
+
+            border: 3px solid #3563e9;
+
+            background: #eee;
+
+        }
+
+
+        .avatar-input {
+
+            margin-top: 15px;
+
+        }
+
+
+        .profile-header h2 {
+
+            margin: 10px 0 5px;
+
+        }
+
+
+        .profile-header p {
+
+            margin: 0;
+
+            color: #777;
+
+        }
+
+
+        /* FORM */
+
+        label {
+
+            display: block;
+
+            margin-top: 18px;
+
+            margin-bottom: 7px;
+
+            font-size: 14px;
+
+            font-weight: bold;
+
+        }
+
+
+        input {
+
+            width: 100%;
+
+            padding: 12px;
+
+            border: 1px solid #ddd;
+
+            border-radius: 7px;
+
+            outline: none;
+
+        }
+
+
+        input:focus {
+
+            border-color: #3563e9;
+
+        }
+
+
+        input:disabled {
+
+            background: #f1f1f1;
+
+        }
+
+
+        .save-btn {
+
+            width: 100%;
+
+            padding: 13px;
+
+            margin-top: 25px;
+
+            background: #3563e9;
+
+            color: white;
+
+            border: none;
+
+            border-radius: 7px;
+
+            cursor: pointer;
+
+            font-weight: bold;
+
+        }
+
+
+        .save-btn:hover {
+
+            opacity: .9;
+
+        }
+
+
+        #message {
+
+            text-align: center;
+
+            margin-top: 15px;
+
+            font-weight: bold;
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- NAVBAR -->
+
+    <div class="navbar">
+
+        <div class="logo">
+
+            Mind<span>X</span> Profile
+
+        </div>
+
+
+        <button
+            class="logout"
+            onclick="logout()"
+        >
+            Đăng xuất
+        </button>
+
+    </div>
+
+
+    <!-- PROFILE -->
+
+    <div class="container">
+
+
+        <div class="profile-header">
+
+
+            <img
+                id="avatar"
+                class="avatar"
+                src="https://via.placeholder.com/100"
+            >
+
+
+            <br>
+
+
+            <input
+                type="file"
+                id="avatarFile"
+                class="avatar-input"
+                accept="image/*"
+            >
+
+
+            <h2 id="displayName">
+                Đang tải...
+            </h2>
+
+
+            <p id="userEmail"></p>
+
+
+        </div>
+
+
+        <!-- FULLNAME -->
+
+        <label>
+            Họ và tên
+        </label>
+
+        <input
+            type="text"
+            id="fullname"
+            placeholder="Nhập họ và tên"
+        >
+
+
+        <!-- EMAIL -->
+
+        <label>
+            Email
+        </label>
+
+        <input
+            type="email"
+            id="email"
+            disabled
+        >
+
+
+        <!-- PHONE -->
+
+        <label>
+            Số điện thoại
+        </label>
+
+        <input
+            type="text"
+            id="phone"
+            placeholder="Nhập số điện thoại"
+        >
+
+
+        <!-- ADDRESS -->
+
+        <label>
+            Địa chỉ
+        </label>
+
+        <input
+            type="text"
+            id="address"
+            placeholder="Nhập địa chỉ"
+        >
+
+
+        <!-- SAVE -->
+
+        <button
+            class="save-btn"
+            onclick="saveProfile()"
+        >
+            💾 Lưu thông tin
+        </button>
+
+
+        <div id="message"></div>
+
+
+    </div>
+
+
+    <script>
+
+
+        // =====================================
+        // FIREBASE CONFIG
+        // =====================================
+
+        const firebaseConfig = {
+
+            apiKey: "YOUR_API_KEY",
+
+            authDomain:
+                "YOUR_PROJECT.firebaseapp.com",
+
+            projectId:
+                "YOUR_PROJECT_ID",
+
+            storageBucket:
+                "YOUR_PROJECT.appspot.com",
+
+            messagingSenderId:
+                "YOUR_MESSAGING_SENDER_ID",
+
+            appId:
+                "YOUR_APP_ID"
+
+        };
+
+
+        firebase.initializeApp(
+            firebaseConfig
+        );
+
+
+        const auth =
+            firebase.auth();
+
+
+        const db =
+            firebase.firestore();
+
+
+        const storage =
+            firebase.storage();
+
+
+        // =====================================
+        // KIỂM TRA ĐĂNG NHẬP
+        // =====================================
+
+        auth.onAuthStateChanged(
+            function(user) {
+
+                if (!user) {
+
+                    window.location.href =
+                        "login.html";
+
+                    return;
+
+                }
+
+
+                console.log(
+                    "User UID:",
+                    user.uid
+                );
+
+
+                loadProfile(user);
+
+            }
+        );
+
+
+        // =====================================
+        // ĐỌC PROFILE TỪ FIRESTORE
+        // =====================================
+
+        function loadProfile(user) {
+
+
+            // Email từ Firebase Authentication
+
+            document.getElementById(
+                "email"
+            ).value =
+                user.email || "";
+
+
+            document.getElementById(
+                "userEmail"
+            ).innerText =
+                user.email || "";
+
+
+            // Avatar mặc định từ Google
+
+            if (user.photoURL) {
+
+                document.getElementById(
+                    "avatar"
+                ).src =
+                    user.photoURL;
+
+            }
+
+
+            // Đọc dữ liệu Firestore
+
+            db.collection("users")
+                .doc(user.uid)
+                .get()
+
+
+                .then(function(doc) {
+
+
+                    if (doc.exists) {
+
+
+                        const data =
+                            doc.data();
+
+
+                        // Họ tên
+
+                        document.getElementById(
+                            "fullname"
+                        ).value =
+                            data.fullname || "";
+
+
+                        // Số điện thoại
+
+                        document.getElementById(
+                            "phone"
+                        ).value =
+                            data.phone || "";
+
+
+                        // Địa chỉ
+
+                        document.getElementById(
+                            "address"
+                        ).value =
+                            data.address || "";
+
+
+                        // Avatar
+
+                        if (data.avatar) {
+
+                            document.getElementById(
+                                "avatar"
+                            ).src =
+                                data.avatar;
+
+                        }
+
+
+                        document.getElementById(
+                            "displayName"
+                        ).innerText =
+                            data.fullname ||
+                            "Người dùng";
+
+
+                    } else {
+
+
+                        // Nếu chưa có document
+
+                        document.getElementById(
+                            "displayName"
+                        ).innerText =
+                            user.displayName ||
+                            "Người dùng";
+
+
+                        document.getElementById(
+                            "fullname"
+                        ).value =
+                            user.displayName ||
+                            "";
+
+                    }
+
+                })
+
+
+                .catch(function(error) {
+
+                    console.error(
+                        "Lỗi đọc Firestore:",
+                        error
+                    );
+
+                });
+
+        }
+
+
+        // =====================================
+        // LƯU PROFILE
+        // =====================================
+
+        async function saveProfile() {
+
+
+            const user =
+                auth.currentUser;
+
+
+            if (!user) {
+
+                return;
+
+            }
+
+
+            const fullname =
+                document.getElementById(
+                    "fullname"
+                ).value.trim();
+
+
+            const phone =
+                document.getElementById(
+                    "phone"
+                ).value.trim();
+
+
+            const address =
+                document.getElementById(
+                    "address"
+                ).value.trim();
+
+
+            const avatarFile =
+                document.getElementById(
+                    "avatarFile"
+                ).files[0];
+
+
+            const message =
+                document.getElementById(
+                    "message"
+                );
+
+
+            message.innerText =
+                "Đang lưu...";
+
+
+            try {
+
+
+                let avatarURL =
+                    document.getElementById(
+                        "avatar"
+                    ).src;
+
+
+                // =================================
+                // UPLOAD AVATAR
+                // =================================
+
+                if (avatarFile) {
+
+
+                    const storageRef =
+                        storage.ref(
+                            "avatars/" +
+                            user.uid +
+                            "/" +
+                            avatarFile.name
+                        );
+
+
+                    await storageRef.put(
+                        avatarFile
+                    );
+
+
+                    avatarURL =
+                        await storageRef.getDownloadURL();
+
+
+                    // Cập nhật avatar trên giao diện
+
+                    document.getElementById(
+                        "avatar"
+                    ).src =
+                        avatarURL;
+
+                }
+
+
+                // =================================
+                // LƯU FIRESTORE
+                // =================================
+
+                await db
+                    .collection("users")
+                    .doc(user.uid)
+                    .set({
+
+                        fullname:
+                            fullname,
+
+                        email:
+                            user.email,
+
+                        phone:
+                            phone,
+
+                        address:
+                            address,
+
+                        avatar:
+                            avatarURL,
+
+                        updatedAt:
+                            firebase.firestore
+                                .FieldValue
+                                .serverTimestamp()
+
+                    }, {
+
+                        merge: true
+
+                    });
+
+
+                // =================================
+                // CẬP NHẬT GIAO DIỆN
+                // =================================
+
+                document.getElementById(
+                    "displayName"
+                ).innerText =
+                    fullname ||
+                    "Người dùng";
+
+
+                message.innerText =
+                    "✅ Đã lưu thông tin thành công!";
+
+
+                message.style.color =
+                    "green";
+
+
+            } catch (error) {
+
+
+                console.error(error);
+
+
+                message.innerText =
+                    "❌ Lỗi: " +
+                    error.message;
+
+
+                message.style.color =
+                    "red";
+
+            }
+
+        }
+
+
+        // =====================================
+        // ĐĂNG XUẤT
+        // =====================================
+
+        function logout() {
+
+
+            auth.signOut()
+
+                .then(function() {
+
+                    window.location.href =
+                        "login.html";
+
+                })
+
+                .catch(function(error) {
+
+                    console.error(error);
+
+                });
+
+        }
+
+    </script>
+
+</body>
+
+</html>

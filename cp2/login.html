@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>MindX Profile - Đăng nhập</title>
+
+    <!-- Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-storage.js"></script>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: Arial, sans-serif;
+            background: #f5f7fb;
+        }
+
+        .login-box {
+            width: 360px;
+            padding: 30px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .logo {
+            text-align: center;
+            font-size: 23px;
+            font-weight: bold;
+            margin-bottom: 25px;
+        }
+
+        .logo span {
+            color: #3563e9;
+        }
+
+        h3 {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            font-size: 13px;
+            margin: 12px 0 6px;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            outline: none;
+        }
+
+        input:focus {
+            border-color: #3563e9;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            margin-top: 18px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .login-btn {
+            background: #3563e9;
+            color: white;
+        }
+
+        .google-btn {
+            background: white;
+            border: 1px solid #ddd;
+        }
+
+        .divider {
+            text-align: center;
+            margin: 15px 0;
+            color: #999;
+        }
+
+        .register {
+            text-align: center;
+            font-size: 13px;
+            margin-top: 20px;
+        }
+
+        .register a {
+            color: #3563e9;
+            text-decoration: none;
+        }
+
+        #message {
+            text-align: center;
+            color: red;
+            font-size: 13px;
+            margin-top: 12px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="login-box">
+
+        <div class="logo">
+            Mind<span>X</span> Profile
+        </div>
+
+        <h3>Đăng nhập</h3>
+
+        <label>Email</label>
+
+        <input
+            type="email"
+            id="email"
+            placeholder="Nhập email"
+        >
+
+        <label>Mật khẩu</label>
+
+        <input
+            type="password"
+            id="password"
+            placeholder="Nhập mật khẩu"
+        >
+
+        <button
+            class="login-btn"
+            onclick="login()"
+        >
+            Đăng nhập
+        </button>
+
+        <div class="divider">
+            hoặc
+        </div>
+
+        <button
+            class="google-btn"
+            onclick="loginGoogle()"
+        >
+            🌐 &nbsp; Đăng nhập với Google
+        </button>
+
+        <div id="message"></div>
+
+        <div class="register">
+            Chưa có tài khoản?
+            <a href="register.html">Đăng ký</a>
+        </div>
+
+    </div>
+
+
+    <script>
+
+        // ==============================
+        // FIREBASE CONFIG
+        // ==============================
+
+        const firebaseConfig = {
+
+            apiKey: "YOUR_API_KEY",
+
+            authDomain: "YOUR_PROJECT.firebaseapp.com",
+
+            projectId: "YOUR_PROJECT_ID",
+
+            storageBucket: "YOUR_PROJECT.appspot.com",
+
+            messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+
+            appId: "YOUR_APP_ID"
+
+        };
+
+
+        // Khởi tạo Firebase
+
+        firebase.initializeApp(firebaseConfig);
+
+
+        const auth = firebase.auth();
+
+        const db = firebase.firestore();
+
+
+        // ==============================
+        // ĐĂNG NHẬP EMAIL / PASSWORD
+        // ==============================
+
+        function login() {
+
+            const email =
+                document.getElementById("email").value.trim();
+
+            const password =
+                document.getElementById("password").value;
+
+
+            if (!email || !password) {
+
+                document.getElementById("message").innerText =
+                    "Vui lòng nhập email và mật khẩu!";
+
+                return;
+            }
+
+
+            auth.signInWithEmailAndPassword(
+                email,
+                password
+            )
+
+            .then(function(result) {
+
+                console.log(
+                    "Đăng nhập thành công:",
+                    result.user.email
+                );
+
+                window.location.href =
+                    "profile.html";
+
+            })
+
+            .catch(function(error) {
+
+                console.error(error);
+
+                document.getElementById("message").innerText =
+                    getErrorMessage(error.code);
+
+            });
+
+        }
+
+
+        // ==============================
+        // ĐĂNG NHẬP GOOGLE
+        // ==============================
+
+        function loginGoogle() {
+
+            const provider =
+                new firebase.auth.GoogleAuthProvider();
+
+
+            auth.signInWithPopup(provider)
+
+            .then(function(result) {
+
+                const user = result.user;
+
+
+                // Lưu thông tin Google vào Firestore
+
+                return db
+                    .collection("users")
+                    .doc(user.uid)
+                    .set({
+
+                        email: user.email,
+
+                        fullname:
+                            user.displayName || "",
+
+                        avatar:
+                            user.photoURL || "",
+
+                        updatedAt:
+                            firebase.firestore.FieldValue.serverTimestamp()
+
+                    }, {
+                        merge: true
+                    });
+
+            })
+
+            .then(function() {
+
+                window.location.href =
+                    "profile.html";
+
+            })
+
+            .catch(function(error) {
+
+                console.error(error);
+
+                document.getElementById("message").innerText =
+                    getErrorMessage(error.code);
+
+            });
+
+        }
+
+
+        // ==============================
+        // HIỂN THỊ LỖI
+        // ==============================
+
+        function getErrorMessage(code) {
+
+            switch (code) {
+
+                case "auth/user-not-found":
+                    return "Tài khoản không tồn tại!";
+
+                case "auth/wrong-password":
+                    return "Sai mật khẩu!";
+
+                case "auth/invalid-email":
+                    return "Email không hợp lệ!";
+
+                case "auth/popup-closed-by-user":
+                    return "Bạn đã đóng cửa sổ đăng nhập Google.";
+
+                case "auth/popup-blocked":
+                    return "Trình duyệt đã chặn cửa sổ Google.";
+
+                default:
+                    return "Đăng nhập thất bại: " + code;
+
+            }
+
+        }
+
+    </script>
+
+</body>
+
+</html>

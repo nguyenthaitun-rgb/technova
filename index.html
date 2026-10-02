@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TechNova</title>
+    <link rel="stylesheet" href="./css/index.css">
+    <link rel="stylesheet" href="./css/chatbot.css">
+</head>
+
+<body>
+    
+    <div class="container">
+        <div class="header">
+            <div class="header-left">
+                <div class="logo">Tech<span>Nova</span></div>
+                <nav class="nav">
+                    <a href="#">Trang chủ</a>
+                    <a href="#">Sản phẩm</a>
+                    <a href="#">Bộ sưu tập</a>
+                    <a href="#">Liên hệ</a>
+                    <a href="admin.html">Quản trị</a>
+                </nav>
+            </div>
+
+            <div class="header-right">
+                <div class="search-box">
+                    <input type="text" placeholder="Tìm sản phẩm...">
+                </div>
+
+                <div class="header-icons">
+                    <div class="cart-menu">
+                        <span class="cart" id="cart-icon" aria-label="Giỏ hàng">
+                            🛒
+                            <span class="cart-badge" id="cart-count">0</span>
+                        </span>
+                        <div class="cart-dropdown" id="cart-dropdown">
+                            <div class="cart-header">
+                                <strong>Giỏ hàng</strong>
+                            </div>
+                            <div class="cart-items" id="cart-items"></div>
+                            <div class="cart-footer">
+                                <div class="cart-total">
+                                    <span>Tổng:</span>
+                                    <strong id="cart-total">0₫</strong>
+                                </div>
+                                <button class="checkout-btn" type="button">Thanh toán</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="user-menu">
+                        <span class="user" id="user-icon">👤</span>
+                        <div class="user-dropdown" id="user-dropdown">
+                            <div class="dropdown-user-info" id="dropdown-user-info"></div>
+                            <a class="dropdown-admin" id="dropdown-admin" href="./admin.html">Trang quản trị</a>
+                            <button class="dropdown-logout" id="btn-logout">Đăng xuất</button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <div class="banner">
+            <img src="./img/banner.png" alt="Banner">
+        </div>
+        <div id="product-grid" class="product-grid">
+        </div>
+
+        <footer class="site-footer">
+            <div class="container">
+                <div class="footer-grid">
+                    <div class="footer-brand">
+                        <p class="footer-logo">Tech<span>Nova</span></p>
+                        <p class="footer-tagline">
+                            Máy tính, laptop & phụ kiện chính hãng — giá tốt nhất thị trường. Miễn phí giao hàng toàn quốc.
+                        </p>
+                        <div class="footer-contact-info">
+                            <p>123 Nguyễn Huệ, Quận 1</p>
+                            <p>TP. Hồ Chí Minh</p>
+                            <p><a href="tel:1900123456">1900 123 456</a></p>
+                            <p><a href="mailto:info@techstore.vn">info@techstore.vn</a></p>
+                        </div>
+                    </div>
+
+                    <div class="footer-column">
+                        <h4 class="footer-column-title">Danh mục</h4>
+                        <ul class="footer-links">
+                            <li><a href="#">Laptop</a></li>
+                            <li><a href="#">PC & Máy tính bàn</a></li>
+                            <li><a href="#">Linh kiện</a></li>
+                            <li><a href="#">Phụ kiện</a></li>
+                            <li><a href="#">Màn hình</a></li>
+                        </ul>
+                    </div>
+
+                    <div class="footer-column">
+                        <h4 class="footer-column-title">Hỗ trợ</h4>
+                        <ul class="footer-links">
+                            <li><a href="#">Hướng dẫn mua hàng</a></li>
+                            <li><a href="#">Chính sách bảo hành</a></li>
+                            <li><a href="#">Chính sách đổi trả</a></li>
+                            <li><a href="#">Thanh toán & giao hàng</a></li>
+                            <li><a href="#">Tra cứu đơn hàng</a></li>
+                        </ul>
+                    </div>
+
+                    <div class="footer-column footer-about">
+                        <h4 class="footer-column-title">Về TechNova</h4>
+                        <p>
+                            TechNova là nhà bán lẻ thiết bị công nghệ hàng đầu Việt Nam, chuyên cung cấp laptop, PC và linh kiện chính hãng với giá tốt nhất.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="footer-bottom">
+                    <p class="footer-copyright">© 2026 TechNova. </p>
+                    <div class="footer-social">
+                        <a href="#">Facebook</a>
+                        <a href="#">Zalo</a>
+                        <a href="#">YouTube</a>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <button id="chat-toggle" type="button" title="Chat với trợ lý" aria-label="Mở chat">
+        💬
+        <span id="chat-badge"></span>
+    </button>
+
+    <div id="chat-panel" aria-label="Trợ lý sản phẩm">
+        <div id="chat-header">
+            <div class="avatar">🛍️</div>
+            <div class="info">
+                <h3>Trợ lý sản phẩm</h3>
+                <p><span id="status-dot"></span><span id="header-status">Đang tải...</span></p>
+            </div>
+            <button id="close-btn" type="button" title="Đóng" aria-label="Đóng chat">✕</button>
+        </div>
+        <div id="messages"></div>
+        <div id="suggestions">
+            <button class="suggestion-chip" type="button" onclick="askSuggestion(this)">Danh mục?</button>
+            <button class="suggestion-chip" type="button" onclick="askSuggestion(this)">Rẻ nhất?</button>
+            <button class="suggestion-chip" type="button" onclick="askSuggestion(this)">Điện thoại tốt</button>
+            <button class="suggestion-chip" type="button" onclick="askSuggestion(this)">Đánh giá cao</button>
+        </div>
+        <div id="input-area">
+            <textarea id="user-input" rows="1" placeholder="Hỏi về sản phẩm..." aria-label="Nhập câu hỏi"></textarea>
+            <button id="send-btn" type="button" disabled aria-label="Gửi câu hỏi">➤</button>
+        </div>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/12.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/12.8.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/12.8.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/12.8.0/firebase-functions-compat.js"></script>
+    <script src="./js/configFirebase.js"></script>
+    <script src="./js/index.js"></script>
+    <script src="./js/chatbot.js"></script>
+    
+</body>
+
+</html>

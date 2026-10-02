@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TechNova - Chi tiết sản phẩm</title>
+    <link rel="stylesheet" href="./css/product-detail.css">
+</head>
+<body>
+    <header class="detail-header">
+        <a href="./index.html" class="logo">Tech<span>Nova</span></a>
+        <a href="./index.html" class="back-link">← Quay lại cửa hàng</a>
+    </header>
+
+    <main class="detail-container">
+        <div id="loading" class="state-box">Đang tải sản phẩm...</div>
+
+        <section id="product-detail" class="product-detail" hidden>
+            <div class="product-image-box">
+                <img id="product-image" src="" alt="">
+            </div>
+
+            <div class="product-content">
+                <span id="product-category" class="category"></span>
+                <h1 id="product-name"></h1>
+                <div id="product-price" class="price"></div>
+
+                <div class="rating-section" aria-labelledby="rating-title">
+                    <div class="rating-summary">
+                        <strong id="product-rating">0.0</strong>
+                        <span class="rating-stars" aria-hidden="true">★★★★★</span>
+                        <span id="rating-count">Chưa có đánh giá</span>
+                    </div>
+                    <div class="rating-form">
+                        <span id="rating-title">Đánh giá sản phẩm</span>
+                        <div id="rating-buttons" class="rating-buttons" role="radiogroup" aria-label="Chọn số sao">
+                            <button type="button" data-rating="1" aria-label="1 sao">★</button>
+                            <button type="button" data-rating="2" aria-label="2 sao">★</button>
+                            <button type="button" data-rating="3" aria-label="3 sao">★</button>
+                            <button type="button" data-rating="4" aria-label="4 sao">★</button>
+                            <button type="button" data-rating="5" aria-label="5 sao">★</button>
+                        </div>
+                        <span id="rating-message" class="rating-message" role="status"></span>
+                    </div>
+                </div>
+
+                <div class="divider"></div>
+
+                <div class="info-row">
+                    <span>Tình trạng</span>
+                    <strong id="product-stock">Còn hàng</strong>
+                </div>
+
+                <div class="description">
+                    <h2>Mô tả sản phẩm</h2>
+                    <p id="product-description">Sản phẩm công nghệ chính hãng được bán tại TechNova.</p>
+                </div>
+
+                <div class="buy-area">
+                    <label for="quantity">Số lượng</label>
+                    <div class="quantity-control">
+                        <button id="minus-btn" type="button">−</button>
+                        <input id="quantity" type="number" min="1" value="1">
+                        <button id="plus-btn" type="button">+</button>
+                    </div>
+
+                    <button id="add-cart-btn" class="add-cart-btn" type="button">
+                        🛒 Thêm vào giỏ hàng
+                    </button>
+                    <button id="buy-now-btn" class="buy-now-btn" type="button">
+                        Mua ngay
+                    </button>
+                </div>
+
+                <div id="message" class="message"></div>
+            </div>
+        </section>
+
+        <div id="error-box" class="state-box error-box" hidden>
+            <h2>Không tìm thấy sản phẩm</h2>
+            <p>Sản phẩm bạn đang xem không tồn tại hoặc đã bị xóa.</p>
+            <a href="./index.html">Về trang chủ</a>
+        </div>
+    </main>
+
+    <script src="https://www.gstatic.com/firebasejs/12.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/12.8.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/12.8.0/firebase-firestore-compat.js"></script>
+    <script src="./js/configFirebase.js"></script>
+    <script src="./js/product-detail.js"></script>
+</body>
+</html>

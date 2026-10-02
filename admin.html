@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TechNova Admin</title>
+    <link rel="stylesheet" href="./css/admin.css">
+</head>
+
+<body>
+    <div class="admin-layout">
+        <aside class="sidebar">
+            <div class="sidebar-logo">
+                <div class="logo">Tech<span>Nova</span></div>
+                <span class="admin-badge">Quản trị</span>
+            </div>
+
+            <nav class="sidebar-nav">
+                <a href="#" class="nav-item" data-section="dashboard">📊 Tổng quan</a>
+                <a href="#" class="nav-item active" data-section="product-list">📦 Danh sách sản phẩm</a>
+                <a href="#" class="nav-item" data-section="orders">🧾 Đơn hàng</a>
+                <a href="#" class="nav-item" data-section="users">👥 Người dùng</a>
+                <a href="#" class="nav-item" data-section="settings">⚙️ Cài đặt</a>
+            </nav>
+
+            <div class="sidebar-footer">
+                <a href="./index.html" class="btn-back">Quay lại trang chủ</a>
+            </div>
+        </aside>
+
+        <main class="admin-main">
+            <header class="admin-topbar">
+                <h1 id="page-title">Danh sách sản phẩm</h1>
+            </header>
+
+            <section class="content-section" data-section="dashboard">
+                <div class="placeholder-box">
+                    <h2>Tổng quan</h2>
+                    <p>Trang tổng quan đang được phát triển.</p>
+                </div>
+            </section>
+
+            <section class="content-section active" data-section="product-list">
+                <div class="content-header">
+                    <h2>Thêm sản phẩm mới</h2>
+                </div>
+
+                <div class="add-area" id="add-product-area">
+                    <form id="add-product-form">
+                        <div>
+                            <label for="inp-name">Tên sản phẩm:</label>
+                            <input type="text" id="inp-name" name="name" placeholder="VD: Laptop Dell XPS 13" required>
+                        </div>
+                        <div>
+                            <label for="inp-price">Giá (₫):</label>
+                            <input type="number" id="inp-price" name="price" min="0" placeholder="VD: 25000000" required>
+                        </div>
+                        <div>
+                            <label for="inp-image">Link hình ảnh:</label>
+                            <input type="url" id="inp-image" name="imageUrl" placeholder="https://..." required>
+                        </div>
+                        <button type="submit">Thêm sản phẩm</button>
+                    </form>
+                </div>
+
+                <div class="content-header">
+                    <h2>Danh sách sản phẩm</h2>
+                </div>
+
+                <table class="product-table">
+                    <thead>
+                        <tr>
+                            <th>STT</th>
+                            <th>Hình ảnh</th>
+                            <th>Tên sản phẩm</th>
+                            <th>Giá</th>
+                            <th>Thao tác</th>
+                        </tr>
+                    </thead>
+                    <tbody id="product-table-body"></tbody>
+                </table>
+            </section>
+
+            <section class="content-section" data-section="orders">
+                <div class="placeholder-box">
+                    <h2>Đơn hàng</h2>
+                    <p>Quản lý đơn hàng đang được phát triển.</p>
+                </div>
+            </section>
+
+            <section class="content-section" data-section="users">
+                <div class="placeholder-box">
+                    <h2>Người dùng</h2>
+                    <p>Quản lý người dùng đang được phát triển.</p>
+                </div>
+            </section>
+
+            <section class="content-section" data-section="settings">
+                <div class="placeholder-box">
+                    <h2>Cài đặt</h2>
+                    <p>Trang cài đặt đang được phát triển.</p>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/12.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/12.8.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/12.8.0/firebase-firestore-compat.js"></script>
+    <script src="./js/configFirebase.js"></script>
+    <script src="./js/admin.js"></script>
+</body>
+
+</html>

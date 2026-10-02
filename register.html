@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TechNova</title>
+    <link rel="stylesheet" href="./css/register.css">
+</head>
+
+<body>
+    <!-- Form đăng ký -->
+    <form id="register-form">
+        <div class="login-logo">Tech<span>Nova</span></div>
+        <h2>Đăng ký tài khoản</h2>
+        <div>
+            <label for="inp-username">Tên đăng nhập:</label>
+            <input type="text" id="inp-username" name="username" required>
+        </div>
+        <div>
+            <label for="inp-email">Email:</label>
+            <input type="email" id="inp-email" name="email" autocomplete="email" required>
+        </div>
+        <div>
+            <label for="inp-pwd">Mật khẩu:</label>
+            <input type="password" id="inp-pwd" name="password" autocomplete="new-password" required>
+        </div>
+        <div>
+            <label for="inp-confirm-pwd">Xác nhận mật khẩu:</label>
+            <input type="password" id="inp-confirm-pwd" name="confirm-password" autocomplete="new-password" required>
+        </div>
+        <button type="submit">Đăng ký</button>
+        <p class="form-link">Đã có tài khoản? <a href="./login.html">Đăng nhập</a></p>
+    </form>
+
+    <script src="https://www.gstatic.com/firebasejs/12.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/12.8.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/12.8.0/firebase-firestore-compat.js"></script>
+    <script src="./js/configFirebase.js"></script>
+    <script src="./js/register.js"></script>
+</body>
+
+</html>
